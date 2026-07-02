@@ -8,4 +8,4 @@ mlruns/
 .DS_Store
 .idea/
 .vscode/
-./doc/cheat-sheets
+/doc/cheat-sheets
