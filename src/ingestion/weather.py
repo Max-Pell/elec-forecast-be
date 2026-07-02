@@ -12,9 +12,9 @@ TARGET_DIR = Path("./data/raw/weather")
 
 def fetch_weather_raw(start:date, end:date) -> Path:
     """
-    Recupere la temperature horaire a Bruxelles entre start et end (inclus)
-    et ecrit la reponse brute dans data/raw/weather/.
-    Retourne le chemin du fichier ecrit.
+    Retrieve the hourly temperature data for Brussels between `start` and `end` (inclusive), 
+    and write the raw response to `data/raw/weather/`.
+    Return the path to the written file.
     """
     params = {
         "latitude":BRUXELLES_LAT,
@@ -37,4 +37,13 @@ def fetch_weather_raw(start:date, end:date) -> Path:
 
 
 if __name__ == "__main__":
-    print("Raw data saved in : " f"{fetch_weather_raw(date(2025,6,1),date(2025,6,30))}")
+    import argparse
+    parser = argparse.ArgumentParser(
+        description="Fetch raw hourly weather for Brussels into data/raw/weather/."
+    )
+    parser.add_argument("--start", default="2026-06-01", help="ISO date YYYY-MM-DD, inclusive")
+    parser.add_argument("--end", default="2026-06-07", help="ISO date YYYY-MM-DD, inclusive")
+    args = parser.parse_args()
+
+    path = fetch_weather_raw(date.fromisoformat(args.start), date.fromisoformat(args.end))
+    print(f"Weather raw saved in: {path}")

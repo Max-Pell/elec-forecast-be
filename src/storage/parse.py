@@ -26,6 +26,9 @@ def parse_weather_file(path:Path) -> list[tuple[datetime,str,float]]:
 
 
 def parse_load_file(path:Path) -> list[tuple[datetime,str,float]]:
+    """
+    Read a load file, parse it and return a list of tuple.
+    """
     file = json.loads(path.read_text())
 
     times = file["unix_seconds"]

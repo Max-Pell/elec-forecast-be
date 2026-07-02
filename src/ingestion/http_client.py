@@ -10,7 +10,7 @@ def get_with_retry(url:str, params:dict, max_retry=3, initial_wait=3):
 
     while True:
         try:
-            response = requests.get(url=url, params=params, timeout=30)
+            response = requests.get(url=url, params=params, timeout=10)
             response.raise_for_status()
             return response
         except requests.RequestException:

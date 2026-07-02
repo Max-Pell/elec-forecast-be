@@ -11,15 +11,41 @@ SET value = EXCLUDED.value;
 """
 
 def upsert_observations(rows : list[tuple[datetime,str,float]]):
-    
+    """
+    Upsert the data in the database.
+    """
     with get_connection() as conn:
         with conn.cursor() as cursor:
             cursor.executemany(UPSERT_SQL, rows)
             return len(rows)
 
+
+
 if __name__ == "__main__":
-    path_weather = Path("/home/maxpell/projets/elec-forecast-be/data/raw/weather/weather_2025-06-01_2025-06-30.json")
-    rows = parse_weather_file(path_weather)
-    path_load = Path("/home/maxpell/projets/elec-forecast-be/data/raw/load/load_2024-01-01_2024-01-07.json")
-    rows.extend(parse_load_file(path_load))
-    upsert_observations(rows=rows)
+    import argparse
+    from datetime import date
+
+    parser = argparse.ArgumentParser(
+        description="Parse the raw load + weather files for a range and upsert into the DB."
+    )
+    parser.add_argument("--start", default="2026-06-01", help="ISO date YYYY-MM-DD, inclusive")
+    parser.add_argument("--end", default="2026-06-07", help="ISO date YYYY-MM-DD, inclusive")
+    args = parser.parse_args()
+
+    start = date.fromisoformat(args.start)
+    end = date.fromisoformat(args.end)
+
+    load_path = Path("data/raw/load") / f"load_{start}_{end}.json"
+    weather_path = Path("data/raw/weather") / f"weather_{start}_{end}.json"
+
+    for p in (load_path, weather_path):
+        if not p.exists():
+            raise SystemExit(
+                f"Missing raw file: {p}. Run the weather and load fetch commands "
+                "for the same range first."
+            )
+
+    rows = parse_load_file(load_path)
+    rows.extend(parse_weather_file(weather_path))
+    count = upsert_observations(rows)
+    print(f"Upserted {count} rows for {start} to {end}.")
