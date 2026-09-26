@@ -37,7 +37,7 @@ if __name__ == "__main__":
         description="Fetch raw Belgian load into data/raw/load/."
     )
     parser.add_argument("--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive")
-    parser.add_argument("--end", default="2024-12-31", help="ISO date YYYY-MM-DD, inclusive")
+    parser.add_argument("--end", default="2025-01-01", help="ISO date YYYY-MM-DD, exclusive")
     args = parser.parse_args()
 
     path = fetch_load_raw(date.fromisoformat(args.start), date.fromisoformat(args.end))
