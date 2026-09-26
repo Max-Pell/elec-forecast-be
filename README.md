@@ -6,7 +6,7 @@ This is a portfolio project. The goal is to build the full data and MLOps lifecy
 
 ## Status
 
-The data pipeline is complete and running: ingestion from two public APIs and storage in a TimescaleDB time-series database. Feature engineering is the next step, followed by modeling and serving. Full roadmap below.
+The data pipeline is complete and running: ingestion from two public APIs and storage in a TimescaleDB time-series database. Feature engineering is done. The next step is, modeling and serving. Full roadmap below.
 
 ## Stack
 
@@ -76,6 +76,7 @@ Requirements: Docker with Docker Compose, and Python 3.12.
    python -m src.ingestion.weather
    python -m src.ingestion.load
    python -m src.storage.load_to_db
+   python -m src.features.build_features
    ```
 
 ## Data sources and licensing
