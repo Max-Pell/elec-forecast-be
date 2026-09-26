@@ -9,19 +9,15 @@ TARGET_DIR = Path("data/raw/load")
 
 def fetch_load_raw(start: date, end: date) -> Path:
     """
-    Retrieve the production and load data for the BE zone between `start` and `end` 
+    Retrieve the production and load data for the BE zone between `start` and `end`
     from Energy-Charts, and write the raw JSON data to `data/raw/load/`.
     Return the path to the written file.
     """
-    params = {
-        "country":"be",
-        "start":start.isoformat(),
-        "end":end.isoformat()
-    }
+    params = {"country": "be", "start": start.isoformat(), "end": end.isoformat()}
 
     TARGET_DIR.mkdir(parents=True, exist_ok=True)
 
-    response = get_with_retry(ENERGY_CHARTS_URL,params=params)
+    response = get_with_retry(ENERGY_CHARTS_URL, params=params)
 
     file_path = TARGET_DIR / f"load_{start}_{end}.json"
 
@@ -33,11 +29,16 @@ def fetch_load_raw(start: date, end: date) -> Path:
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(
         description="Fetch raw Belgian load into data/raw/load/."
     )
-    parser.add_argument("--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive")
-    parser.add_argument("--end", default="2025-01-01", help="ISO date YYYY-MM-DD, exclusive")
+    parser.add_argument(
+        "--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive"
+    )
+    parser.add_argument(
+        "--end", default="2025-01-01", help="ISO date YYYY-MM-DD, exclusive"
+    )
     args = parser.parse_args()
 
     path = fetch_load_raw(date.fromisoformat(args.start), date.fromisoformat(args.end))

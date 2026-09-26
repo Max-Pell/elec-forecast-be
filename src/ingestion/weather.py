@@ -10,24 +10,24 @@ BRUXELLES_LONG = 4.35
 TARGET_DIR = Path("./data/raw/weather")
 
 
-def fetch_weather_raw(start:date, end:date) -> Path:
+def fetch_weather_raw(start: date, end: date) -> Path:
     """
-    Retrieve the hourly temperature data for Brussels between `start` and `end` (inclusive), 
+    Retrieve the hourly temperature data for Brussels between `start` and `end` (inclusive),
     and write the raw response to `data/raw/weather/`.
     Return the path to the written file.
     """
     params = {
-        "latitude":BRUXELLES_LAT,
-        "longitude":BRUXELLES_LONG,
-        "start_date":start.isoformat(),
-        "end_date":end.isoformat(),
-        "hourly":"temperature_2m"
+        "latitude": BRUXELLES_LAT,
+        "longitude": BRUXELLES_LONG,
+        "start_date": start.isoformat(),
+        "end_date": end.isoformat(),
+        "hourly": "temperature_2m",
     }
 
-    TARGET_DIR.mkdir(parents=True,exist_ok=True)
+    TARGET_DIR.mkdir(parents=True, exist_ok=True)
 
     response = get_with_retry(OPEN_METEO_API_URL, params=params)
-    
+
     file_path = TARGET_DIR / f"weather_{start}_{end}.json"
 
     with open(file_path, "w") as f:
@@ -38,12 +38,19 @@ def fetch_weather_raw(start:date, end:date) -> Path:
 
 if __name__ == "__main__":
     import argparse
+
     parser = argparse.ArgumentParser(
         description="Fetch raw hourly weather for Brussels into data/raw/weather/."
     )
-    parser.add_argument("--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive")
-    parser.add_argument("--end", default="2025-01-01", help="ISO date YYYY-MM-DD, exclusive")
+    parser.add_argument(
+        "--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive"
+    )
+    parser.add_argument(
+        "--end", default="2025-01-01", help="ISO date YYYY-MM-DD, exclusive"
+    )
     args = parser.parse_args()
 
-    path = fetch_weather_raw(date.fromisoformat(args.start), date.fromisoformat(args.end))
+    path = fetch_weather_raw(
+        date.fromisoformat(args.start), date.fromisoformat(args.end)
+    )
     print(f"Weather raw saved in: {path}")
