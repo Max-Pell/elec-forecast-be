@@ -56,7 +56,7 @@ The project is organized as 10 modules covering the full lifecycle.
 - [X] 0. Project setup and Git
 - [X] 1. Ingestion
 - [X] 2. Storage (TimescaleDB)
-- [ ] 3. Feature engineering
+- [X] 3. Feature engineering
 - [ ] 4. Modeling and experiment tracking (MLflow)
 - [ ] 5. Serving (FastAPI)
 - [ ] 6. Monitoring
