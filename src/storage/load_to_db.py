@@ -10,7 +10,8 @@ ON CONFLICT (ts, series) DO UPDATE
 SET value = EXCLUDED.value;
 """
 
-def upsert_observations(rows : list[tuple[datetime,str,float]]):
+
+def upsert_observations(rows: list[tuple[datetime, str, float]]):
     """
     Upsert the data in the database.
     """
@@ -20,7 +21,6 @@ def upsert_observations(rows : list[tuple[datetime,str,float]]):
             return len(rows)
 
 
-
 if __name__ == "__main__":
     import argparse
     from datetime import date
@@ -28,8 +28,12 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(
         description="Parse the raw load + weather files for a range and upsert into the DB."
     )
-    parser.add_argument("--start", default="2026-06-01", help="ISO date YYYY-MM-DD, inclusive")
-    parser.add_argument("--end", default="2026-06-07", help="ISO date YYYY-MM-DD, inclusive")
+    parser.add_argument(
+        "--start", default="2023-01-01", help="ISO date YYYY-MM-DD, inclusive"
+    )
+    parser.add_argument(
+        "--end", default="2024-12-31", help="ISO date YYYY-MM-DD, inclusive"
+    )
     args = parser.parse_args()
 
     start = date.fromisoformat(args.start)
