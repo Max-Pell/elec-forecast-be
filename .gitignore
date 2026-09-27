@@ -9,3 +9,5 @@ mlruns/
 .idea/
 .vscode/
 /doc/cheat-sheets
+mlflow.db
+mlartifacts/
